@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import cogoToast from 'cogo-toast';
 
 export const counterSlice = createSlice({
   name: 'counter',
@@ -10,10 +11,17 @@ export const counterSlice = createSlice({
       state.value += 1;
     },
     decrement: (state) => {
-      state.value -= 1;
+      if (state.value > 0) {
+        state.value -= 1;
+      } else {
+        cogoToast.error("Value can't be less than 0");
+      }
+    },
+    setCustom: (state, action) => {
+      state.value = +action.payload;
     },
   },
 });
 
-export const { increment, decrement } = counterSlice.actions;
+export const { increment, decrement, setCustom } = counterSlice.actions;
 export default counterSlice.reducer;
